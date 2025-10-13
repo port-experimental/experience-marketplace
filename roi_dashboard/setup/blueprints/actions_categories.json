@@ -1,0 +1,14 @@
+{
+"identifier": "actions_categories",
+"description": "Categories for actions",
+"title": "Actions categories",
+"icon": "Microservice",
+"schema": {
+    "properties": {},
+    "required": []
+},
+"mirrorProperties": {},
+"calculationProperties": {},
+"aggregationProperties": {},
+"relations": {}
+}

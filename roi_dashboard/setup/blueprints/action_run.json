@@ -1,0 +1,140 @@
+{
+"identifier": "action_run",
+"title": "Action run",
+"icon": "Microservice",
+"schema": {
+    "properties": {
+    "status": {
+        "icon": "DefaultProperty",
+        "title": "Status",
+        "type": "string",
+        "enum": [
+        "SUCCESS",
+        "FAILURE",
+        "IN_PROGRESS",
+        "WAITING_FOR_APPROVAL",
+        "DECLINED"
+        ],
+        "enumColors": {
+        "SUCCESS": "green",
+        "FAILURE": "red",
+        "IN_PROGRESS": "lightGray",
+        "WAITING_FOR_APPROVAL": "yellow",
+        "DECLINED": "red"
+        }
+    },
+    "created_at": {
+        "type": "string",
+        "title": "Created At",
+        "format": "date-time"
+    },
+    "run_id": {
+        "type": "string",
+        "title": "Run ID"
+    },
+    "run_url": {
+        "type": "string",
+        "title": "Run URL",
+        "format": "url"
+    },
+    "updated_at": {
+        "type": "string",
+        "title": "Updated At",
+        "format": "date-time"
+    },
+    "duration": {
+        "type": "number",
+        "title": "Duration",
+        "description": "In seconds"
+    },
+    "waiting_for_approval_duration": {
+        "type": "number",
+        "title": "Waiting for approval duration",
+        "description": "In seconds"
+    },
+    "cycle_time": {
+        "icon": "DefaultProperty",
+        "title": "Cycle Time",
+        "description": "Total time from in progress to completion in seconds",
+        "type": "number"
+    }
+    },
+    "required": []
+},
+"mirrorProperties": {
+    "ran_by": {
+    "title": "Ran by",
+    "path": "ran_by_actual_user.$identifier"
+    },
+    "team_2": {
+    "title": "User teams",
+    "path": "ran_by_actual_user.$team.$identifier"
+    },
+    "user_group": {
+    "title": "User group",
+    "path": "ran_by_actual_user.$team.group.$title"
+    },
+    "category": {
+        "title": "Category",
+        "path": "parent_action.category.$title"
+        },
+    "lead_time_before": {
+    "title": "Lead time before",
+    "path": "parent_action.lead_time_before"
+    },
+    "cycle_time_before": {
+    "title": "Cycle time before",
+    "path": "parent_action.cycle_time"
+    },
+    "action": {
+    "title": "Action",
+    "path": "parent_action.$title"
+    }
+},
+"calculationProperties": {
+    "savings_lead_time_h": {
+    "title": "Savings lead time (h)",
+    "icon": "DefaultProperty",
+    "description": "Time saved on waiting time In hours",
+    "calculation": "if .properties.status == \"SUCCESS\" then (.properties.lead_time_before * 3600 - .properties.duration) / 3600 else null end",
+    "type": "number"
+    },
+    "savings_cycle_time_h": {
+    "title": "Savings cycle time (h)",
+    "icon": "DefaultProperty",
+    "description": "Time saved on cycle time In hours",
+    "calculation": "if .properties.status == \"SUCCESS\" then (.properties.cycle_time_before*3600 - .properties.cycle_time) / 3600 else null end",
+    "type": "number"
+    },
+    "primary_user_group": {
+    "title": "Primary User Group",
+    "icon": "GroupBy",
+    "description": "First user group from the user_group array",
+    "calculation": "if (.properties.user_group | type) == \"array\" and (.properties.user_group | length > 0) then .properties.user_group[0] else (.properties.user_group // \"No Group\") end",
+    "type": "string"
+    },
+    "primary_team": {
+    "title": "Primary Team",
+    "icon": "Team",
+    "description": "First team from the team_2 array",
+    "calculation": "if (.properties.team_2 | type) == \"array\" and (.properties.team_2 | length > 0) then .properties.team_2[0] else (.properties.team_2 // \"No Team\") end",
+    "type": "string"
+    }
+},
+"aggregationProperties": {},
+"relations": {
+    "ran_by_actual_user": {
+    "title": "Ran by actual user",
+    "target": "_user",
+    "required": false,
+    "many": false
+    },
+    "parent_action": {
+        "title": "Parent action",
+        "target": "action",
+        "required": false,
+        "many": false
+        }
+
+}
+}

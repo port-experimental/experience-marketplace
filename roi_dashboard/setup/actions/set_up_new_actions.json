@@ -1,0 +1,75 @@
+{
+"identifier": "setup_new_action",
+"title": "Setup new action experience",
+"description": "Setup a backend that will create scaffolding of action, automation and action kpis",
+"trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+    "properties": {
+        "category": {
+        "type": "string",
+        "title": "Category",
+        "blueprint": "actions_categories",
+        "format": "entity"
+        },
+        "lead_time_before": {
+        "type": "number",
+        "description": "Number of hours spent waiting from ticket creation",
+        "title": "Lead time before"
+        },
+        "cycle_time": {
+        "icon": "DefaultProperty",
+        "type": "number",
+        "title": "Cycle time before",
+        "description": "Time spent in hour executing the request"
+        },
+        "actionTitle": {
+        "icon": "DefaultProperty",
+        "type": "string",
+        "title": "Action title"
+        }
+    },
+    "required": [
+        "category",
+        "actionTitle"
+    ],
+    "order": [
+        "4af618d8-6b42-45c1-81f8-34ead11eb3f5",
+        "actionTitle",
+        "category",
+        "41281872-3eaa-4e6e-b66e-1f3e9bc7d99b",
+        "lead_time_before",
+        "cycle_time"
+    ],
+    "titles": {
+        "4af618d8-6b42-45c1-81f8-34ead11eb3f5": {
+        "title": "Set up a new action",
+        "description": "This will create a new action and the associated action runs as blueprints"
+        },
+        "41281872-3eaa-4e6e-b66e-1f3e9bc7d99b": {
+        "title": "ROI",
+        "description": "Leave blank if no data or n/a"
+        }
+    }
+    },
+    "actionCardButtonText": "Create",
+    "executeActionButtonText": "Create",
+    "blueprintIdentifier": "action"
+},
+"invocationMethod": {
+    "type": "GITHUB",
+    "var__org": "SET_UP_NEW_ACTION_ORG",
+    "var__repo": "SET_UP_NEW_ACTION_REPO",
+    "workflow": "create-port-automation.yml",
+    "workflowInputs": {
+    "{{ spreadValue() }}": "{{ .inputs }}",
+    "port_context": {
+        "runId": "{{ .run.id }}",
+        "blueprint": "{{ .action.blueprint }}"
+    }
+    },
+    "reportWorkflowStatus": true
+},
+"requiredApproval": false
+}
