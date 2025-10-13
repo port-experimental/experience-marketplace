@@ -1,0 +1,409 @@
+{
+"identifier": "action",
+"description": "Action as a blueprint",
+"title": "Action",
+"icon": "Microservice",
+"ownership": {
+    "type": "Direct",
+    "title": "Owning Teams"
+},
+"schema": {
+    "properties": {
+    "lead_time_before": {
+        "icon": "DefaultProperty",
+        "type": "number",
+        "title": "Lead time before(h)"
+    },
+    "cycle_time": {
+        "icon": "DefaultProperty",
+        "type": "number",
+        "title": "Cycle time before(h)"
+    },
+    "description": {
+        "type": "string",
+        "title": "Description"
+    },
+    "criticality": {
+        "icon": "DefaultProperty",
+        "title": "Criticality",
+        "type": "string",
+        "default": "Tier 3",
+        "enum": [
+        "Tier 1",
+        "Tier 2",
+        "Tier 3"
+        ],
+        "enumColors": {
+        "Tier 1": "red",
+        "Tier 2": "orange",
+        "Tier 3": "lightGray"
+        }
+    }
+    },
+    "required": [
+    "criticality"
+    ]
+},
+"calculationProperties": {
+    "overall_failure_rate": {
+    "title": "Overall Failure Rate (%)",
+    "icon": "DefaultProperty",
+    "description": "Percentage of failed runs out of total runs",
+    "calculation": "if .properties.total_runs > 0 then (.properties.failed_runs / .properties.total_runs * 100) else 0 end",
+    "type": "number"
+    },
+    "success_rate": {
+    "title": "Success Rate (%)",
+    "description": "Percentage of successful runs out of total runs",
+    "calculation": "if .properties.total_runs > 0 then (.properties.successful_runs / .properties.total_runs * 100) else 0 end",
+    "type": "number"
+    },
+    "daily_failure_rate": {
+    "title": "Daily Failure Rate (%)",
+    "description": "Percentage of failed runs in the last day",
+    "calculation": "if .properties.daily_total_runs > 0 then (.properties.daily_failed_runs / .properties.daily_total_runs * 100) else 0 end",
+    "type": "number"
+    },
+    "weekly_failure_rate": {
+    "title": "Weekly Failure Rate (%)",
+    "description": "Percentage of failed runs in the last week",
+    "calculation": "if .properties.weekly_total_runs > 0 then (.properties.weekly_failed_runs / .properties.weekly_total_runs * 100) else 0 end",
+    "type": "number"
+    },
+    "monthly_failure_rate": {
+    "title": "Monthly Failure Rate (%)",
+    "description": "Percentage of failed runs in the last month",
+    "calculation": "if .properties.monthly_total_runs > 0 then (.properties.monthly_failed_runs / .properties.monthly_total_runs * 100) else 0 end",
+    "type": "number"
+    },
+    "total_runs_with_status": {
+    "title": "Total Runs (with status)",
+    "description": "Sum of successful and failed runs",
+    "calculation": "(.properties.successful_runs // 0) + (.properties.failed_runs // 0)",
+    "type": "number"
+    },
+    "total_waiting_time_h": {
+    "title": "Total Waiting Time (h)",
+    "icon": "HourGlass",
+    "description": "Total waiting for approval time across all runs in hours",
+    "calculation": "if .properties.total_waiting_time_seconds > 0 then .properties.total_waiting_time_seconds / 3600 else 0 end",
+    "type": "number"
+    },
+    "average_waiting_time_h": {
+    "title": "Average Waiting Time (h)",
+    "icon": "HourGlass",
+    "description": "Average waiting for approval duration per run in hours",
+    "calculation": "if .properties.runs_with_waiting_time > 0 then (.properties.total_waiting_time_seconds / .properties.runs_with_waiting_time) / 3600 else 0 end",
+    "type": "number"
+    },
+    "max_waiting_time_h": {
+    "title": "Max Waiting Time (h)",
+    "icon": "HourGlassExpired",
+    "description": "Maximum waiting time for any single run in hours",
+    "calculation": "if .properties.max_waiting_time_seconds > 0 then .properties.max_waiting_time_seconds / 3600 else 0 end",
+    "type": "number"
+    }
+},
+"aggregationProperties": {
+    "total_lead_time_savings_h": {
+    "title": "Total lead time savings (h)",
+    "type": "number",
+    "description": "In hours",
+    "target": "action_run",
+    "calculationSpec": {
+        "func": "sum",
+        "property": "savings_lead_time_h",
+        "calculationBy": "property"
+    }
+    },
+    "total_runs": {
+    "title": "Total Runs",
+    "type": "number",
+    "description": "Total number of action runs",
+    "target": "action_run",
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "failed_runs": {
+    "title": "Failed Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Number of failed action runs",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "FAILURE"
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "successful_runs": {
+    "title": "Successful Runs",
+    "type": "number",
+    "description": "Number of successful action runs",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "SUCCESS"
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "in_progress_runs": {
+    "title": "In Progress Runs",
+    "type": "number",
+    "description": "Number of currently running actions",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "IN_PROGRESS"
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "daily_total_runs": {
+    "title": "Daily Total Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Total runs in the last 24 hours",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "today"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "daily_failed_runs": {
+    "title": "Daily Failed Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Failed runs in the last 24 hours",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "FAILURE"
+        },
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "today"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "weekly_total_runs": {
+    "title": "Weekly Total Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Total runs in the last 7 days",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "lastWeek"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "weekly_failed_runs": {
+    "title": "Weekly Failed Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Failed runs in the last week",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "FAILURE"
+        },
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "lastWeek"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "monthly_total_runs": {
+    "title": "Monthly Total Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Total runs in the last 30 days",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "lastMonth"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "monthly_failed_runs": {
+    "title": "Monthly Failed Runs",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "Failed runs in the last month",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "status",
+            "operator": "=",
+            "value": "FAILURE"
+        },
+        {
+            "property": "$createdAt",
+            "operator": "between",
+            "value": {
+            "preset": "lastMonth"
+            }
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    },
+    "total_cycle_time_savings_h": {
+    "title": "Total cycle time savings (h)",
+    "icon": "DefaultProperty",
+    "type": "number",
+    "description": "In hours",
+    "target": "action_run",
+    "calculationSpec": {
+        "func": "sum",
+        "property": "savings_cycle_time_h",
+        "calculationBy": "property"
+    }
+    },
+    "total_waiting_time_seconds": {
+    "title": "Total Waiting Time (seconds)",
+    "icon": "HourGlass",
+    "type": "number",
+    "description": "Total waiting for approval time across all runs in seconds",
+    "target": "action_run",
+    "calculationSpec": {
+        "func": "sum",
+        "property": "waiting_for_approval_duration",
+        "calculationBy": "property"
+    }
+    },
+    "max_waiting_time_seconds": {
+    "title": "Max approving Time (s)",
+    "icon": "HourGlassExpired",
+    "type": "number",
+    "description": "Maximum waiting for approval in seconds",
+    "target": "action_run",
+    "calculationSpec": {
+        "func": "max",
+        "property": "waiting_for_approval_duration",
+        "calculationBy": "property"
+    }
+    },
+    "runs_with_waiting_time": {
+    "title": "Runs with Waiting Time",
+    "icon": "HourGlass",
+    "type": "number",
+    "description": "Number of runs that had waiting time",
+    "target": "action_run",
+    "query": {
+        "combinator": "and",
+        "rules": [
+        {
+            "property": "waiting_for_approval_duration",
+            "operator": ">",
+            "value": 0
+        }
+        ]
+    },
+    "calculationSpec": {
+        "func": "count",
+        "calculationBy": "entities"
+    }
+    }
+},
+"relations": {
+    "category": {
+    "title": "Category",
+    "target": "actions_categories",
+    "required": true,
+    "many": false
+    }
+}
+}

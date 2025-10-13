@@ -1,0 +1,67 @@
+{
+  "identifier": "dashboard",
+  "title": "Actions ROI Dashboard",
+  "icon": "Dashboard",
+  "type": "dashboard",
+  "showInSidebar": true,
+  "section": "software_catalog",
+  "sidebar": "catalog",
+  "protected": false,
+  "widgets": [
+    {
+      "id": "layout_actions_roi",
+      "type": "dashboard-widget",
+      "layout": [
+        {
+          "height": 400,
+          "columns": [
+            { "id": "w_total_hours_saved", "size": 4 },
+            { "id": "w_total_processing_time_saved", "size": 4 },
+            { "id": "w_total_time_waiting_for_approval", "size": 4 }
+          ]
+        }
+      ],
+      "widgets": [
+        {
+          "id": "w_total_hours_saved",
+          "title": "Total hours saved",
+          "description": "Lead time",
+          "type": "entities-number-chart",
+          "icon": "Calculator",
+          "blueprint": "action",
+          "calculationBy": "property",
+          "property": "total_lead_time_savings_h",
+          "func": "sum",
+          "unit": "custom",
+          "unitCustom": "hours",
+          "emptyStateText": "No actions yet — run at least one action to see data."
+        },
+        {
+          "id": "w_total_processing_time_saved",
+          "title": "Total processing time saved",
+          "description": "Cycle time",
+          "type": "entities-number-chart",
+          "icon": "Calculator",
+          "blueprint": "action",
+          "calculationBy": "property",
+          "property": "total_cycle_time_savings_h",
+          "func": "sum",
+          "unit": "custom",
+          "unitCustom": "hours"
+        },
+        {
+          "id": "w_total_time_waiting_for_approval",
+          "title": "Total time waiting for approval",
+          "type": "entities-number-chart",
+          "icon": "HourGlass",
+          "blueprint": "action",
+          "calculationBy": "property",
+          "property": "total_waiting_time_h",
+          "func": "sum",
+          "unit": "custom",
+          "unitCustom": "hours"
+        }
+      ]
+    }
+  ]
+}
