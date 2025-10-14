@@ -8,12 +8,12 @@ This package turns Port’s guides into a one‑click experience.
 
 ### Install
 ```bash
-pip install --upgrade port-experience
+pip install --upgrade port-experience==0.1.1
 ```
 
 ### Run
 ```bash
-port-experience-apply
+experience apply
 ```
 
 ### Notes

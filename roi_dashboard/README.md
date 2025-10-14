@@ -8,7 +8,7 @@ This package wraps Port's "Create an actions ROI dashboard" guide into a readyâ€
 References:
 
 - Guide: [Create an actions ROI dashboard](https://docs.port.io/guides/all/create-roi-dashboard/)
-- PyPI: [`port-experience` 0.1.0](https://pypi.org/project/port-experience/0.1.0/)
+- PyPI: [`port-experience` 0.1.1](https://pypi.org/project/port-experience/0.1.1/)
 
 ### Whatâ€™s included
 
@@ -59,12 +59,12 @@ Prerequisites: Python 3.10+.
 Install the experience package:
 
 ```bash
-pip install --upgrade port-experience==0.1.0
+pip install --upgrade port-experience==0.1.1
 ```
 
 Run the experience:
 
 ```bash
-port-experience-apply
+experience apply
 ```
 
