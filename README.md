@@ -8,12 +8,12 @@ This package turns Port’s guides into a one‑click experience.
 
 ### Install
 ```bash
-pip install --upgrade port-one-click-middleware
+pip install --upgrade port-experience
 ```
 
 ### Run
 ```bash
-port-middleware
+port-experience-apply
 ```
 
 ### Notes
