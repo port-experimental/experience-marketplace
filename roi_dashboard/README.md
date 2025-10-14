@@ -8,15 +8,15 @@ This package wraps Port's "Create an actions ROI dashboard" guide into a readyâ€
 References:
 
 - Guide: [Create an actions ROI dashboard](https://docs.port.io/guides/all/create-roi-dashboard/)
-- PyPI: [`port-one-click-middleware`](https://pypi.org/project/port-one-click-middleware/)
+- PyPI: [`port-experience` 0.1.3](https://pypi.org/project/port-experience/0.1.3/)
 
 ### Whatâ€™s included
 
-- `setup/*`: All actions, blueprints and widgets that will be created by the `port-one-click-middleware`
-- `your_github_set`: This contains the GitHub workflow setup required to allow this to run
+- `setup/*`: All actions, blueprints and widgets that will be created by the `port-experience`
+- `your_github_setup`: This contains the GitHub workflow setup required to allow this to run
 - `.env.sample`: This contains environment variables you need to set
 
-Note: GitHub requires workflows to live at repo root under `yout_github_setup`. We include the workflow here as a template so you can copy it to your repository root.
+Note: GitHub requires workflows to live at repo root under `your_github_setup`. We include the workflow here as a template so you can copy it to your repository root.
 
 ### Prerequisites
 
@@ -56,15 +56,19 @@ SET_UP_NEW_ACTION_REPO=your-repo
 
 Prerequisites: Python 3.10+.
 
-Install the middleware:
+Install the experience package:
 
 ```bash
-pip install --upgrade port-one-click-middleware
+pip install --upgrade port-experience==0.1.3
 ```
 
 Run the experience:
 
 ```bash
-port-middleware
+#if running from roi_dashboard directory
+experience apply
+
+#if running from experience-market directory
+experience apply --roi_dashboard
 ```
 
