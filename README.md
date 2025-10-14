@@ -1,6 +1,14 @@
 # Port Experience
 
-A Python CLI tool for managing [Port.io](https://www.getport.io/) resources including blueprints, actions, mappings, and widgets from local JSON files.
+This repository contains pre-built experiences that you can apply to your Port.io environment:
+
+### 📊 [Actions ROI Dashboard](./roi_dashboard/README.md)
+A one-click experience that quantifies the business value of Port actions by measuring lead time and cycle time savings. Includes:
+- Self-service action that scaffolds the ROI data model and automation
+- GitHub Actions workflow template for tracking action runs
+- Pre-built dashboard with widgets for time savings metrics
+
+*For detailed setup instructions, see the [roi_dashboard README](./roi_dashboard/README.md)*
 
 ## Installation
 
