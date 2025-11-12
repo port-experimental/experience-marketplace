@@ -1,0 +1,29 @@
+{
+  "identifier": "cancel_workflow_run_v2",
+  "title": "Cancel Workflow Run",
+  "icon": "Unavailable",
+  "description": "Cancel a running workflow run",
+  "trigger": {
+    "type": "self-service",
+    "operation": "DAY-2",
+    "userInputs": {
+      "properties": {},
+      "required": [],
+      "order": []
+    },
+    "blueprintIdentifier": "githubWorkflowRun"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://api.github.com/repos/{{WORKFLOW_REPO}}/{{ .entity.identifier | split(\"/\")[0] }}/actions/runs/{{ .entity.identifier | split(\"/\")[-1] }}/cancel",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer {{ .secrets._GITHUB_TOKEN }}",
+      "X-GitHub-Api-Version": "2022-11-28"
+    }
+  },
+  "requiredApproval": false
+}
