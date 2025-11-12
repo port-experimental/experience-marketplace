@@ -1,0 +1,55 @@
+{
+  "identifier": "trigger_workflow_run",
+  "title": "Trigger Workflow Run",
+  "icon": "Github",
+  "description": "Triggers a GitHub workflow run in the specified repository",
+  "trigger": {
+    "type": "self-service",
+    "operation": "DAY-2",
+    "userInputs": {
+      "properties": {
+        "environment": {
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string",
+          "default": "test",
+          "enum": [
+            "test",
+            "staging",
+            "production"
+          ],
+          "enumColors": {
+            "test": "lightGray",
+            "staging": "lightGray",
+            "production": "lightGray"
+          }
+        }
+      },
+      "required": [],
+      "order": [
+        "environment"
+      ]
+    },
+    "blueprintIdentifier": "githubWorkflow"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "var__url": "https://api.github.com/repos/{{WORKFLOW_REPO}}/{{ .entity.relations.repository }}/actions/workflows/{{ .entity.properties.path | split(\"/\")[-1] }}/dispatches",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer {{ .secrets._GITHUB_TOKEN }}",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ref": "main",
+      "inputs": {
+        "environment": "{{ .inputs.environment }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

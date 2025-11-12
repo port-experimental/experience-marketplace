@@ -1,0 +1,232 @@
+{
+      "identifier": "github_deployments_dashboard",
+      "title": "Visualize github deployments",
+      "type": "dashboard",
+      "icon": "Dashboard",
+      "showInSidebar": true,
+      "section": "software_catalog",
+      "sidebar": "catalog",
+      "protected": false,
+      "widgets": [
+        {
+          "id": "layout_github_deployments",
+          "type": "dashboard-widget",
+          "layout": [
+            {
+              "height": 400,
+              "columns": [
+                {
+                  "id": "total_deployments",
+                  "size": 4
+                },
+                {
+                  "id": "deployments_by_status",
+                  "size": 4
+                },
+                {
+                  "id": "trigger_workflow_run",
+                  "size": 4
+                }
+              ]
+            },
+            {
+              "height": 400,
+              "columns": [
+                {
+                  "id": "lh0EtChC1jmvzEvs",
+                  "size": 12
+                }
+              ]
+            }
+          ],
+          "widgets": [
+              {
+              "id": "total_deployments",
+              "title": "Total deployments",
+              "icon": "Deployment",
+              "type": "entities-number-chart",
+              "blueprint": "githubWorkflowRun",
+              "func": "count",
+              "dataset": {
+                "combinator": "and",
+                "rules": [
+                  {
+                    "combinator": "and",
+                    "rules": [
+                      {
+                        "property": "$title",
+                        "operator": "contains",
+                        "value": "deploy"
+                      },
+                      {
+                        "property": "createdAt",
+                        "operator": "between",
+                        "value": {
+                          "preset": "last3Months"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "unit": "custom",
+              "unitCustom": "deployments",
+              "chartType": "countEntities",
+              "description": "",
+              "calculationBy": "entities",
+              "emptyStateText": ""
+              },
+            {
+              "id": "deployments_by_status",
+              "title": "Deployments by status",
+              "icon": "Deployment",
+              "type": "entities-pie-chart",
+              "blueprint": "githubWorkflowRun",
+              "property": "property#conclusion",
+              "description": "",
+              "emptyStateText": "",
+              "dataset": {
+                "combinator": "or",
+                "rules": [
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "deploy"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "production"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "CD"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "staging"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "trigger_workflow_run",
+              "type": "action-card-widget",
+              "title": "Trigger Workflow Run",
+              "actions": [
+                {
+                  "action": "trigger_workflow_run"
+                }
+              ],
+              "icon": "Bolt",
+              "description": "Quickly trigger a GitHub workflow run"
+            },
+            {
+              "type": "table-entities-explorer",
+              "displayMode": "widget",
+              "title": "All Deployments.",
+              "excludedFields": [
+
+              ],
+              "description": "",
+              "emptyStateText": "",
+              "icon": "Table",
+              "dataset": {
+                "combinator": "or",
+                "rules": [
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "deploy"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "production"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "CD"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "staging"
+                  }
+                ]
+              },
+              "blueprintConfig": {
+                "githubWorkflowRun": {
+                  "propertiesSettings": {
+                    "order": [
+
+                    ],
+                    "shown": [
+                      "$title",
+                      "$updatedAt",
+                      "$createdAt"
+                    ]
+                  }
+                }
+              },
+              "blueprint": "githubWorkflowRun",
+              "id": "lh0EtChC1jmvzEvs"
+            }
+          ]
+        },
+        {
+          "id": "layout_all_deployments",
+          "type": "dashboard-widget",
+          "layout": [
+            {
+              "height": 600,
+              "columns": [
+                {
+                  "id": "all_deployments_table",
+                  "size": 12
+                }
+              ]
+            }
+          ],
+          "widgets": [
+            {
+              "id": "all_deployments_table",
+              "title": "All Deployments",
+              "type": "table-entities-explorer",
+              "dataset": {
+                "combinator": "or",
+                "rules": [
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "deploy"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "production"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "CD"
+                  },
+                  {
+                    "property": "$title",
+                    "operator": "contains",
+                    "value": "staging"
+                  }
+                ]
+              },
+              "excludedFields": [
+
+              ],
+              "blueprint": "githubWorkflowRun"
+            }
+          ]
+        }
+      ]
+}
