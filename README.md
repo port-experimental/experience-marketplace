@@ -10,6 +10,15 @@ A one-click experience that quantifies the business value of Port actions by mea
 
 *For detailed setup instructions, see the [roi_dashboard README](./roi_dashboard/README.md)*
 
+### 🚀 [GitHub Deployments Manager](./gh_deployments_manager/README.md)
+A one-click experience that visualizes and manages GitHub deployments in your Port.io environment. Includes:
+- Blueprints for GitHub workflows and workflow runs
+- Self-service actions to trigger, rerun, and cancel workflow runs
+- GitHub integration mapping to sync repository, workflow, and workflow run data
+- Pre-built dashboard widget to visualize and track deployments
+
+*For detailed setup instructions, see the [gh_deployments_manager README](./gh_deployments_manager/README.md)*
+
 ## Installation
 
 ```bash
